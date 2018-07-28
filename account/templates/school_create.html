@@ -30,7 +30,7 @@ $(document).ready(function() {
 {% block content %}
 <form action="." method="post">
   {% csrf_token %}
-  <table>
+  <table class="table table-sm">
     <tbody>
       <tr>
         <th>
@@ -75,7 +75,7 @@ $(document).ready(function() {
       </tr>
     </tbody>
   </table>
-  <input class="form-control btn-info" type="submit" value="送出" />
+  <input class="form-control btn btn-info" type="submit" value="送出" />
 </form>
 <div id="comments">
   <h2>已註冊學校：</h2>

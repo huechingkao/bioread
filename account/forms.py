@@ -6,41 +6,38 @@ from account.models import School
 
 # 使用者登入表單
 class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput)
+    username = forms.CharField(label='帳號')
+    password = forms.CharField(label='密碼', widget=forms.PasswordInput)
 
-    def __init__(self, *args, **kwargs):
-        super(LoginForm, self).__init__(*args, **kwargs)
-        self.fields['username'].label = "帳號"
-        self.fields['password'].label = "密碼"
-
-class UserRegistrationForm(forms.ModelForm): 
+class UserRegistrationForm(forms.ModelForm):
     error_messages = {
         'duplicate_username': ("此帳號已被使用")
     }
-    
+
     username = forms.RegexField(
-        label="User name", max_length=30, regex=r"^[\w.@+-]+$",
+        label="帳號", max_length=30, regex=r"^[\w.@+-]+$",
         error_messages={
             'invalid': ("帳號名稱無效")
         }
     )
-    
-    password = forms.CharField(label='Password', 
-                               widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Repeat password', 
-                                widget=forms.PasswordInput)
+    password = forms.CharField(label='密碼', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='確認密碼', widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email')
+        fields = ['username', 'first_name', 'last_name', 'email']
+        labels = {
+            'first_name': '真實姓名',
+            'last_name': '學校名稱',
+            'email': '電子郵件',
+        }
 
     def clean_password2(self):
         cd = self.cleaned_data
         if cd['password'] != cd['password2']:
             raise forms.ValidationError('Passwords don\'t match.')
         return cd['password2']
-            
+
     def clean_username(self):
         username = self.cleaned_data["username"]
         if self.instance.username == username:
@@ -54,48 +51,32 @@ class UserRegistrationForm(forms.ModelForm):
             code='duplicate_username',
         )
 
-    def __init__(self, *args, **kwargs):
-        super(UserRegistrationForm, self).__init__(*args, **kwargs)
-        self.fields['username'].label = "帳號"
-        self.fields['first_name'].label = "真實姓名"
-        self.fields['last_name'].label = "學校名稱"
-        self.fields['email'].label = "電子郵件"
-        self.fields['password'].label = "密碼"
-        self.fields['password2'].label = "再次確認密碼"    
-
-
-class UserUpdateForm(forms.ModelForm): 
+class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name', 'email')
+        labels = {
+            'username': '帳號',
+            'first_name': '真實姓名',
+            'last_name': '學校名稱',
+            'email': '電子郵件',
+        }
 
-    def __init__(self, *args, **kwargs):
-        super(UserUpdateForm, self).__init__(*args, **kwargs)
-        self.fields['username'].label = "帳號"
-        self.fields['first_name'].label = "真實姓名"
-        self.fields['last_name'].label = "學校名稱"
-        self.fields['email'].label = "電子郵件"         
-
-class UserPasswordForm(forms.ModelForm): 
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+class UserPasswordForm(forms.ModelForm):
+    password = forms.CharField(label='密碼', widget=forms.PasswordInput)
 
     class Meta:
         model = User
         fields = ('password',)
-        
-    def __init__(self, *args, **kwargs):
-        super(UserPasswordForm, self).__init__(*args, **kwargs)  
-        self.fields['password'].label = "密碼"
-        
-class UserTeacherForm(forms.Form):    
-    teacher = forms.BooleanField(required=False)
-       
+
+class UserTeacherForm(forms.Form):
+    teacher = forms.BooleanField(label='教師', required=False)
+
     def __init__(self, *args, **kwargs):
         user_id = kwargs.pop('pk', None)
-        super(UserTeacherForm, self).__init__(*args, **kwargs)  
-        self.fields['teacher'].label = "教師"  
+        super(UserTeacherForm, self).__init__(*args, **kwargs)
         self.fields['teacher'].initial = User.objects.get(id=user_id).groups.filter(name='teacher').exists()
-        
+
 # 學校表單
 class RegistrationSchoolForm(forms.ModelForm):
     captcha = NoReCaptchaField(label='')
@@ -103,10 +84,9 @@ class RegistrationSchoolForm(forms.ModelForm):
     class Meta:
         model = School
         fields = ('county', 'zone', 'system', 'name')
-
-    def __init__(self, *args, **kwargs):
-        super(RegistrationSchoolForm, self).__init__(*args, **kwargs)
-        self.fields['county'].label = "縣市"
-        self.fields['zone'].label = "區域"
-        self.fields['system'].label = "學制"
-        self.fields['name'].label = "學校名稱"
+        labels = {
+            'county': '縣市',
+            'zone': '區域',
+            'system': '學制',
+            'name': '學校名稱',
+        }

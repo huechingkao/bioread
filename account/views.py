@@ -134,7 +134,7 @@ class UserCreate(CreateView):
     model = User
     form_class = UserRegistrationForm
     success_url = "/account/login"   
-    template_name = 'form.html'
+    #template_name = 'form.html'
       
     def form_valid(self, form):
         valid = super(UserCreate, self).form_valid(form)

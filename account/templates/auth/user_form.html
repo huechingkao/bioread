@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block header %}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="/static/register_helper.js"></script>
+<script>
+var school_pool = [
+  {% for s in schools %}{id: {{ s.id }}, zid: {{ s.zone }}, name: "{{ s.name }}"}, 
+  {% endfor %}
+];
+$(document).ready(function() {
+  // Replace TextInput with 3 Select elements
+  $('#id_last_name').parent().load('/static/school_template.html', null, function() {
+    reset_county();
+    var school = location.href.match(/\?school=(\d+)\/(\d+)\/(\d+)/);
+    if (school && school.length == 4) {
+      $('#county').val(school[1]);
+      reset_zone();
+      $('#zone').val(school[2]);
+      reset_school();
+      $('#schools').val(school[3]);
+    }
+  });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+<form action="" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <table class="table table-sm">
+    {{ form.as_table }}
+    <tr><td></td><td><input type="submit" class="btn btn-info form-control" value="送出" /></td></tr>
+  </table>    
+</form>
+{% endblock %}
