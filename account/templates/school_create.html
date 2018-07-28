@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block header %}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script src="/static/register_helper.js"></script>
+<script>
+var school_pool = [
+  {% for s in schools %}{id: {{ s.id }}, zid: {{ s.zone }}, name: "{{ s.name }}"}, 
+  {% endfor %}
+];
+//---------------------------------------------------------------------------
+function update_school_list() {
+  var zid = parseInt($('#zone').val());
+  var html = '';
+  for (sid in school_pool) {
+    school = school_pool[sid];
+    if (school.zid == zid) {
+      html += '<li class="btn btn-light">' + school.name + '</li> ';
+    }
+  }
+  $('#school_list').html(html);
+}
+//---------------------------------------------------------------------------
+$(document).ready(function() {
+  reset_county();
+})
+</script>
+{% endblock %}
+
+{% block content %}
+<form action="." method="post">
+  {% csrf_token %}
+  <table>
+    <tbody>
+      <tr>
+        <th>
+          <label for="id_county">縣市:</label>
+        </th>
+        <td>
+          <select class="form-control" name="county" id="county" onchange="reset_zone(); update_school_list();"></select>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <label for="id_zone">區域:</label>
+        </th>
+        <td>
+          <select class="form-control" name="zone" id="zone" onchange="update_school_list();"></select>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <label for="id_system">學制:</label>
+        </th>
+        <td>
+          <select class="form-control" name="system" id="id_system">
+            <option value=0>國小</option>
+            <option value=1>國中</option>
+            <option value=2>高中</option>
+            <option value=3>大學</option>     
+          </select>       
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <label for="id_name">學校名稱:</label>
+        </th>
+        <td>
+          <input id="id_name" maxlength="50" name="name" class="form-control" type="text">
+        </td>
+      </tr>
+      <tr>
+        <th></th>
+        <td><div class="g-recaptcha" data-sitekey="6LfA4GYUAAAAANpI50rkKpLN_ZagC5C5AOjqjEsk"></div></td>
+      </tr>
+    </tbody>
+  </table>
+  <input class="form-control btn-info" type="submit" value="送出" />
+</form>
+<div id="comments">
+  <h2>已註冊學校：</h2>
+  <ul id="school_list" class="commentlist">
+  </ul>
+</div>
+{% endblock %}

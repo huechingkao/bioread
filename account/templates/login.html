@@ -8,16 +8,8 @@
 
 <form method="post" action=".">
 {% csrf_token %}
-<div>
-  <td>帳號：</td>
-  <td>{{ form.username }}</td>
-</div>
-<div>
-  <td>密碼：</td>
-  <td>{{ form.password }}</td>
-</div>
-<div>
-  <input type="submit" value="登入" />
+{{ form.as_p }}
+  <input type="submit" class="btn-info" value="登入" />
 </div>
 </form>
 {% endblock %}

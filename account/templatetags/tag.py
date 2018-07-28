@@ -24,3 +24,18 @@ def realname(user_id):
     except :
         pass
     return ""
+  
+@register.filter(name="img")
+def img(title):
+    if title.startswith(u'[私訊]'):
+        return "line"
+    elif title.startswith(u'[公告]'):
+        return "announce"
+    elif u'擔任小老師' in title:
+        return "assistant"
+    elif u'設您為教師' in title:
+        return "teacher"
+    elif u'核發了一張證書給你' in title:
+        return "certificate"
+    else :
+        return ""

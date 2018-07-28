@@ -1,6 +1,18 @@
 # -*- coding: UTF-8 -*-
 from django import forms
 from django.contrib.auth.models import User, Group
+from nocaptcha_recaptcha.fields import NoReCaptchaField
+from account.models import School
+
+# 使用者登入表單
+class LoginForm(forms.Form):
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
+        self.fields['username'].label = "帳號"
+        self.fields['password'].label = "密碼"
 
 class UserRegistrationForm(forms.ModelForm): 
     error_messages = {
@@ -84,3 +96,17 @@ class UserTeacherForm(forms.Form):
         self.fields['teacher'].label = "教師"  
         self.fields['teacher'].initial = User.objects.get(id=user_id).groups.filter(name='teacher').exists()
         
+# 學校表單
+class RegistrationSchoolForm(forms.ModelForm):
+    captcha = NoReCaptchaField(label='')
+
+    class Meta:
+        model = School
+        fields = ('county', 'zone', 'system', 'name')
+
+    def __init__(self, *args, **kwargs):
+        super(RegistrationSchoolForm, self).__init__(*args, **kwargs)
+        self.fields['county'].label = "縣市"
+        self.fields['zone'].label = "區域"
+        self.fields['system'].label = "學制"
+        self.fields['name'].label = "學校名稱"
