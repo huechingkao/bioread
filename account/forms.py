@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.models import User, Group
 from nocaptcha_recaptcha.fields import NoReCaptchaField
-from account.models import School
+from account.models import *
 
 # 使用者登入表單
 class LoginForm(forms.Form):
@@ -90,3 +90,18 @@ class RegistrationSchoolForm(forms.ModelForm):
             'system': '學制',
             'name': '學校名稱',
         }
+        
+# 新增一個私訊表單
+class LineForm(forms.ModelForm):
+    class Meta:
+       model = Message
+       fields = ['title','content',]
+       
+    def __init__(self, *args, **kwargs):
+        super(LineForm, self).__init__(*args, **kwargs)
+        self.fields['title'].label = "主旨"
+        self.fields['title'].widget.attrs['size'] = 50
+        self.fields['content'].label = "內容"
+        self.fields['content'].required = False            
+        self.fields['content'].widget.attrs['cols'] = 50
+        self.fields['content'].widget.attrs['rows'] = 20          

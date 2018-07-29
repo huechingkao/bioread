@@ -30,6 +30,11 @@ $(document).ready(function() {
   {% csrf_token %}
   <table class="table table-sm">
     {{ form.as_table }}
+     <tr>
+        <th></th>
+        <td><div class="g-recaptcha" data-sitekey="6LfA4GYUAAAAANpI50rkKpLN_ZagC5C5AOjqjEsk"></div></td>
+      </tr>
+
     <tr><td></td><td><input type="submit" class="btn btn-info form-control" value="送出" /></td></tr>
   </table>    
 </form>

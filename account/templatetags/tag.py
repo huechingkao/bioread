@@ -1,6 +1,7 @@
 from django import template
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from account.models import MessagePoll
 
 register = template.Library()
 
@@ -25,6 +26,14 @@ def realname(user_id):
         pass
     return ""
   
+@register.filter(takes_context=True)
+def read_already(message_id, user_id):
+    try:
+        messagepoll = MessagePoll.objects.get(message_id=message_id, reader_id=user_id)
+    except ObjectDoesNotExist:
+        messagepoll = MessagePoll()
+    return messagepoll.read      
+  
 @register.filter(name="img")
 def img(title):
     if title.startswith(u'[私訊]'):
@@ -39,3 +48,15 @@ def img(title):
         return "certificate"
     else :
         return ""
+      
+@register.filter
+def teacher_group(user):
+    return user.groups.filter(name='teacher').exists()
+  
+@register.filter
+def teacher_classroom(user_id, classroom_id):
+    classroom = Classroom.object.get(id=classroom_id)
+    if classroom.teacher_id == user_id:
+        return True
+    else:
+        return Fals

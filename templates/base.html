@@ -1,4 +1,5 @@
 <!doctype html>
+{% load tag %}
 <html lang="zh-hant">
   <head>
     <!-- Required meta tags -->
@@ -14,7 +15,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script type="text/javascript">
     jQuery(function () {
-      $('form>p').addClass('form-group');
+      $('form>p').addClass('form-group form-inline');
       $('form input, form select, form textarea').addClass('form-control');
     });
     </script>
@@ -31,7 +32,15 @@
     <!-- ################################################################################################ -->
     <div class="fl_left">
       <ul class="nospace">
-    <li><a href="/">首頁</a></li>
+    <li><img src="/static/images/icon_home.png"> <a href="/">首頁</a></li>  
+    {% if user.is_authenticated %}
+    <li><img src="/static/images/icon_message.png"> <a href="/account/dashboard/0">訊息</a></li> 
+    <li><img src="/static/images/icon_doc.png"> <a href="/account/user/{{user.id}}">檔案</a></li>     
+    <li><img src="/static/images/icon_class.png"> <a href="/student/classroom">班級</a></li>
+    {% if user|teacher_group %}
+    <li><img src="/static/images/icon_teacher.png"> <a href="/teacher/classroom">教師</a></li>
+    {% endif %} 
+    {% endif %} 
       </ul>
     </div>
     <div class="fl_right">
