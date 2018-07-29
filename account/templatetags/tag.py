@@ -60,3 +60,9 @@ def teacher_classroom(user_id, classroom_id):
         return True
     else:
         return Fals
+
+@register.filter
+def student_username(name):
+    start = "_"
+    student = name[name.find(start)+1:]
+    return student    

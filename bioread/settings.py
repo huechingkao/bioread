@@ -132,3 +132,6 @@ STATICFILES_DIRS = [
 # 再將 SITE_KEY 與 SECRET_KEY 置換下方內容
 NORECAPTCHA_SITE_KEY = "6LfA4GYUAAAAANpI50rkKpLN_ZagC5C5AOjqjEsk"
 NORECAPTCHA_SECRET_KEY = "6LfA4GYUAAAAAPyPCwjQhLyCEQIiFGYKTrkNx3DC"
+
+FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
+                        "django_excel.TemporaryExcelFileUploadHandler")

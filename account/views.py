@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.views import generic
 from django.contrib.auth.models import User, Group
-from django.views.generic import CreateView, UpdateView, DeleteView, ListView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView, FormView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils.http import is_safe_url
@@ -21,6 +21,7 @@ from account.zone import *
 from django.utils import timezone
 from django.utils.timezone import localtime
 from student.models import *
+from django.contrib.auth import authenticate, login
 
 class Login(FormView):
     success_url = '/account/dashboard/0'
@@ -37,9 +38,18 @@ class Login(FormView):
 
         return super(Login, self).dispatch(request, *args, **kwargs)
 
-    def form_valid(self, form):
-        user = User.objects.get(username=form.cleaned_data['username'])
-        auth_login(self.request, user)
+    def form_valid(self, form):         
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password']         
+        if self.kwargs['role'] == 0:	
+            user = authenticate(username=username, password=password)
+        else:
+            teacher = form.cleaned_data['teacher']					
+            user = authenticate(username=teacher+"_"+username, password=password)   
+        if user is not None:
+            auth_login(self.request, user)
+        else :
+            return redirect("/account/login/"+self.kwargs['role'])
         if user.id == 1 and user.first_name == "":
             user.first_name = "管理員"
             user.save()
@@ -108,8 +118,14 @@ class Login(FormView):
             redirect_to = self.success_url
         return redirect_to
 
+    def get_form_class(self):
+        if self.kwargs['role'] == 0:
+            return LoginForm
+        else :
+            return LoginStudentForm
+      
 class Logout(RedirectView):
-    url = '/account/login/'
+    url = '/account/login/0'
 
     def get(self, request, *args, **kwargs):
         auth_logout(request)
@@ -119,7 +135,7 @@ class SuperUserRequiredMixin(object):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_superuser:
-            return redirect("/account/login")
+            return redirect("/account/login/0")
         return super(SuperUserRequiredMixin, self).dispatch(request,
             *args, **kwargs)
 
@@ -134,7 +150,7 @@ class UserDetail(LoginRequiredMixin, generic.DetailView):
 class UserCreate(CreateView):
     model = User
     form_class = UserRegistrationForm
-    success_url = "/account/login"   
+    success_url = "/account/login/0"   
     #template_name = 'user_create.html'
       
     def form_valid(self, form):

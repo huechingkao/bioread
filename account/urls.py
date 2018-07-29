@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path('dashboard/<int:action>',  views.MessageList.as_view()),
-    path('login/', views.Login.as_view()),
+    path('login/<int:role>', views.Login.as_view()),
     path('logout/', views.Logout.as_view()),  
     path('user/', views.UserList.as_view()),
     path('user/create/', views.UserCreate.as_view()),    

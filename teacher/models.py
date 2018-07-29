@@ -14,3 +14,10 @@ class Classroom(models.Model):
     @property
     def teacher(self):
         return User.objects.get(id=self.teacher_id) 
+      
+#匯入
+class ImportUser(models.Model):
+	  username = models.CharField(max_length=50, default="")
+	  first_name = models.CharField(max_length=50, default="")
+	  password = models.CharField(max_length=50, default="")
+	  email = models.CharField(max_length=100, default="")

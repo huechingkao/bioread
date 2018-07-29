@@ -9,6 +9,18 @@ class LoginForm(forms.Form):
     username = forms.CharField(label='帳號')
     password = forms.CharField(label='密碼', widget=forms.PasswordInput)
 
+# 學生登入表單
+class LoginStudentForm(forms.Form):
+    teacher = forms.CharField()
+    username = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    def __init__(self, *args, **kwargs):
+        super(LoginStudentForm, self).__init__(*args, **kwargs)
+        self.fields['teacher'].label = "教師帳號"
+        self.fields['username'].label = "學生帳號"
+        self.fields['password'].label = "密碼"    
+    
 class UserRegistrationForm(forms.ModelForm):
     error_messages = {
         'duplicate_username': ("此帳號已被使用")

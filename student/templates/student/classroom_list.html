@@ -1,20 +1,24 @@
 {% extends "base.html" %}
 {% load tag %}
 {% block content %}
-<a href="/student/classroom/join">加入班級</a>
-<table>
-  <tr>
-  <th>班級名稱</th>   
-  <th>功能</th>       
-  </tr>
+<a href="/student/classroom/join" class="btn btn-info"><i class="fa fa-hand-o-right"></i> 加入班級</a>
 {% for classroom, enroll in queryset %}
-  <tr>
-  <td>{{classroom.name}}</td>
-  <td>
-    <a href="/student/classroom/{{enroll.id}}/seat">座號</a>
-    <a href="/student/classroom/{{classroom.id}}/classmate">同學</a>
-  </td>
-  </tr>
+<div class="card">
+  <div class="card-header">
+   {{classroom.name}}
+  </div>
+  <div class="card-body">
+    <a href="/student/classroom/{{enroll.id}}/seat" class="btn btn-light"><i class="fa fa-edit"></i>座號</a>
+    <a href="/student/classroom/{{classroom.id}}/classmate" class="btn btn-light"><i class="fa fa-search-plus"></i>同學</a>
+    <a href="/" class="btn btn-light"><i class="fa fa-volume-control-phone"></i>私訊</a>
+    <a href="/" class="btn btn-secondary"><i class="fa fa-street-view"></i>分組</a>
+    <a href="/" class="btn btn-secondary"><i class="fa fa-bullhorn"></i>公告</a>   
+    <a href="/" class="btn btn-success"><i class="fa fa-commenting"></i>討論區</a>  
+    <a href="/" class="btn btn-success"><i class="fa fa-cogs"></i>思辨區</a>    
+    <a href="/" class="btn btn-success"><i class="fa fa-cubes"></i>合作區</a>    
+    <a href="/" class="btn btn-success"><i class="fa fa-flag"></i>測驗區</a>        
+  </div>
+</div>
 {% endfor %}
-</table>
+
 {% endblock %}

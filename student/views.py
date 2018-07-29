@@ -4,7 +4,7 @@ from student.models import Enroll
 from student.forms import EnrollForm
 from django.views import generic
 from django.contrib.auth.models import User, Group
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.db import IntegrityError
 
@@ -71,3 +71,4 @@ class ClassroomSeatUpdate(UpdateView):
     fields = ['seat']
     success_url = "/student/classroom/"      
     template_name = "form.html"
+    
