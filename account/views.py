@@ -49,7 +49,7 @@ class Login(FormView):
         if user is not None:
             auth_login(self.request, user)
         else :
-            return redirect("/account/login/"+self.kwargs['role'])
+            return redirect("/account/login/"+str(self.kwargs['role']))
         if user.id == 1 and user.first_name == "":
             user.first_name = "管理員"
             user.save()
