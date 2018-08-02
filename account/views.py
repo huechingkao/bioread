@@ -287,13 +287,13 @@ class LineClassmateList(LoginRequiredMixin, generic.ListView):
     def render_to_response(self, context):
         if not is_classmate(self.request.user.id, self.kwargs['classroom_id']):
             return redirect('/')
-        return super(LineClassmateListView, self).render_to_response(context)            
+        return super(LineClassmateList, self).render_to_response(context)            
                 
 #新增一個私訊
 class LineCreate(LoginRequiredMixin, CreateView):
     model = Message
     form_class = LineForm
-    success_url = '/account/dashboard'    
+    success_url = '/account/dashboard/0'    
     template_name = 'account/line_form.html'     
 
     def form_valid(self, form):

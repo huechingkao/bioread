@@ -20,3 +20,11 @@ class Enroll(models.Model):
     @property        
     def student(self):
         return User.objects.get(id=self.student_id)   
+      
+class StudentGroup(models.Model):
+    group_id = models.IntegerField(default=0)
+    enroll_id = models.IntegerField(default=0)
+    group = models.IntegerField(default=0)		
+
+    class Meta:
+        unique_together = ('enroll_id', 'group_id',)				

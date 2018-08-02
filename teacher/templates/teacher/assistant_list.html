@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load tag %}
+{% block content %}
+        {% for classroom in classrooms %}
+  <div class="card">
+  <div class="card-header">
+   {{classroom.name}}({{classroom.password}})--{{classroom.teacher_id|realname}}老師
+  </div>
+  <div class="card-body">
+    <a href="/student/classroom/{{classroom.id}}/classmate" class="btn btn-light"><i class="fa fa-search-plus"></i>學生</a>
+    <a href="/teacher/group/{{classroom.id}}" class="btn btn-secondary"><i class="fa fa-street-view"></i>分組</a>
+    <a href="/" class="btn btn-secondary"><i class="fa fa-bullhorn"></i>公告</a>   
+    <a href="/" class="btn btn-success"><i class="fa fa-commenting"></i>討論區</a>  
+    <a href="/" class="btn btn-success"><i class="fa fa-cogs"></i>思辨區</a>    
+    <a href="/" class="btn btn-success"><i class="fa fa-cubes"></i>合作區</a>    
+    <a href="/" class="btn btn-success"><i class="fa fa-flag"></i>測驗區</a>     </div>
+  </div>
+  <div>
+  {% endfor %}
+    		    {% load pagination %}
+        {% get_pagination %}
+  
+{% endblock %}

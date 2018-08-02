@@ -2,8 +2,16 @@ from django import template
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from account.models import MessagePoll
+from teacher.models import Assistant
 
 register = template.Library()
+
+@register.filter(name='assistant') 
+def assistant(user_id):
+    assistants = Assistant.objects.filter(user_id=user_id)
+    if assistants:
+      return True
+    return False
 
 @register.filter
 def teacher_group(user):

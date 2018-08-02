@@ -18,5 +18,5 @@ urlpatterns = [
     #私訊
     path('line/classmate/<int:classroom_id>/', views.LineClassmateList.as_view()),      
     path('line/<int:user_id>/<int:classroom_id>/create/', views.LineCreate.as_view()), 
-    path('line/<int:pk>/', views.LineDetail.as_view()),  
+    path('line/<int:pk>/', views.LineDetail.as_view()),    
 ]

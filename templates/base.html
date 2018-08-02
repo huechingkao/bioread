@@ -38,6 +38,9 @@
     <li><img src="/static/images/icon_message.png"> <a href="/account/dashboard/0">訊息</a></li> 
     <li><img src="/static/images/icon_doc.png"> <a href="/account/user/{{user.id}}">檔案</a></li>     
     <li><img src="/static/images/icon_class.png"> <a href="/student/classroom">班級</a></li>
+	  {% if user.id|assistant %}
+	  <li><a href="/teacher/assistant"><img src="/static/images/icon_assistant.png"> 助教</a></li>
+	  {% endif %}        
     {% if user|teacher_group %}
     <li><img src="/static/images/icon_teacher.png"> <a href="/teacher/classroom">教師</a></li>
     {% endif %} 
@@ -83,6 +86,41 @@
 </div>
 <!-- ################################################################################################ -->
 <a id="backtotop" href="#top"><i class="fas fa-chevron-up"></i></a>
+<!-- ################################################################################################ -->
+<!-- JAVASCRIPTS -->
+<script>
+  var csrftoken = $.cookie('csrftoken');
+  function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+  }
+  
+  $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+      if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      }
+    }
+  });
+  $(document).ready(function(){
+		$(window).scroll(function(){
+			if ($(this).scrollTop() > 100) {
+				$('.scrollToTop').fadeIn();
+			} else {
+				$('.scrollToTop').fadeOut();
+			}
+		});
+		//Click event to scroll to top
+		$('.scrollToTop').click(function(){
+			$('html, body').animate({scrollTop : 0},800);
+			return false;
+		});
+    //$('main').css('padding-top', $('.row0').height()+15+'px');		
+    //$('main').css('padding-top', $('.row0').height()+15+'px');
+    {% block domready %}
+    {% endblock %}
+  });
+</script> 
 {% block footer_script %}
 {% endblock %}
 </body>
