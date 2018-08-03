@@ -28,11 +28,10 @@
       <a class="nav-link" data-toggle="tab" href="#tab4">上傳文字</a>
     </li>    
   </ul>
-
   <!-- Tab panes -->
   <div class="tab-content">
-    <div id="tab1" class="container tab-pane active">
-            <form action="" method="post" enctype="multipart/form-data">
+    <div id="tab1" class="tab-pane active">
+      <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type=hidden name=types value="1">
         <input type=hidden name=forum_id value={{forum.id}}>
@@ -51,8 +50,8 @@
         <input type="submit" value="送出" class="btn btn-info" />
       </form>
     </div>
-    <div id="tab2" class="container tab-pane fade">
-           <form action="" method="post" enctype="multipart/form-data">
+    <div id="tab2" class="tab-pane fade">
+      <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type=hidden name=types value="2">
         <input type=hidden name=forum_id value={{forum.id}}>
@@ -67,7 +66,7 @@
         <input type="submit" value="送出" class="btn btn-info" />
       </form>
     </div>
-    <div id="tab3" class="container tab-pane fade">
+    <div id="tab3" class="tab-pane fade">
       <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type=hidden name="types" value="3">
@@ -83,7 +82,7 @@
         <input type="submit" value="送出" class="btn btn-info" />
       </form>
     </div>
-    <div id="tab4" class="container tab-pane fade">
+    <div id="tab4" class="tab-pane fade">
       <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <input type=hidden name="types" value="4">
