@@ -1,8 +1,8 @@
 from django import template
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
-from account.models import MessagePoll
-from teacher.models import Assistant
+from account.models import *
+from teacher.models import *
 
 register = template.Library()
 
@@ -74,3 +74,16 @@ def student_username(name):
     start = "_"
     student = name[name.find(start)+1:]
     return student    
+  
+@register.filter()
+def int_to_str(number):   
+    return str(number)
+
+@register.filter
+def classname(classroom_id):
+    try: 
+        classroom = Classroom.objects.get(id=classroom_id)
+        return classroom.name
+    except ObjectDoesNotExist:
+        pass
+        return ""  

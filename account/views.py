@@ -50,10 +50,19 @@ class Login(FormView):
             auth_login(self.request, user)
         else :
             return redirect("/account/login/"+str(self.kwargs['role']))
-        if user.id == 1 and user.first_name == "":
+        if user.id == 1 and user.first_name == "":          
             user.first_name = "管理員"
             user.save()
             
+            # 學習領域
+            domains = ['生物']
+            for domain_name in domains:
+                domain = Domain(title=domain_name)
+                domain.save()
+            levels = ['高一','高二','高三']
+            for level_name in levels:
+                level = Level(title=level_name)
+                level.save()            
             zones = Zone.objects.all()
             if len(zones) == 0:
                 for city_name, zones, mapx, mapy in county:
@@ -159,7 +168,13 @@ class UserCreate(CreateView):
         new_user.set_password(form.cleaned_data.get('password'))
         new_user.save()  
         profile = Profile(user=new_user)
-        profile.save()        
+        profile.save()  
+        try :
+            group = Group.objects.get(name="apply")	
+        except ObjectDoesNotExist :
+            group = Group(name="apply")
+            group.save()                                         
+        group.user_set.add(new_user)        
         return valid
       
     def get_context_data(self, **kwargs):

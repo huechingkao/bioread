@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load tag %}
+{% block header %}
+<link href="/static/styles/checkbox.css" rel="stylesheet" type="text/css" media="all">
+{% endblock %}
+{% block content %}
+         <form action="" enctype="multipart/form-data"  method="post">
+            <table class="table">
+           <tr><th nowrap>年級:</td>
+                <td>
+              {% for level in levels %}
+         <label for="level{{forloop.counter}}" class="customcheck">{{level.title}}
+           <input {% if level.id|int_to_str in classroom.levels %}checked="checked"{% endif %} value="{{level.id}}" name="levels" type="checkbox" id="level{{forloop.counter}}" class="checkmark">
+           <span class="checkmark"></span>
+        </label>
+                  {% endfor %}
+              </td>             
+              <tr><th nowrap>學習領域:</td>
+                <td>
+              {% for domain in domains %}
+          <label for="domain{{forloop.counter}}" class="customcheck">{{domain.title}}
+           <input {% if domain.id|int_to_str in classroom.domains %}checked="checked"{% endif %} value="{{domain.id}}" name="domains" type="checkbox" id="domain{{forloop.counter}}" class="checkmark">
+           <span class="checkmark"></span>
+        </label>             
+              {% endfor %}
+              </td>
+              </tr>
+
+                <tr><th><label for="id_name">班級名稱:</label></th><td><input class="form-control list-group-item-text" id="id_name" maxlength="30" name="name" type="text" value="{{classroom.name}}"/></td></tr>
+<tr><th><label for="id_password">選課密碼:</label></th><td><input class="form-control list-group-item-text" id="id_password" maxlength="30" name="password" type="text" value="{{classroom.password}}"/></td></tr>
+            </table>
+            {% csrf_token %}
+            <input type="submit" value="送出">
+        </form>
+{% endblock %}

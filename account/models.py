@@ -149,3 +149,11 @@ class TeacherApply(models.Model):
   approver = models.IntegerField(default=0)
   memo = models.TextField()
   file =  models.FileField()
+  
+# 學習領域
+class Domain(models.Model):
+	title = models.CharField(max_length=200, default="",verbose_name= '領域名稱')
+	
+# 年級
+class Level(models.Model):
+  title = models.CharField(max_length=200, default="",verbose_name= '年級')

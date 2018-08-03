@@ -64,7 +64,7 @@ class ClassmateList(generic.ListView):
     template_name = 'student/classmate.html'
     
     def get_queryset(self):
-        enrolls = Enroll.objects.filter(classroom_id=self.kwargs['pk'])
+        enrolls = Enroll.objects.filter(classroom_id=self.kwargs['pk']).order_by("seat")
         return enrolls    
       
 class ClassroomSeatUpdate(UpdateView):
