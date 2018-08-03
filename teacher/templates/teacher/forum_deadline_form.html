@@ -47,7 +47,7 @@
   <div class="col-xs-12 col-sm-6 col-md-4 other_class" {% if not fclass.deadline %}style="display:none;"{% endif %}> 
   <div class="card">
   <div class="card-header">
-   {{class.classroom_id|classname}} --期限：<span class="deadline_string">{% if class.deadline %}{{class.deadline_date|date:'Y F d - H:i'}}{% else %}無{% endif %}</span>
+   {{class.classroom_id|classname}} --期限：<span class="deadline_string">{% if class.deadline %}{{class.deadline_date|date:'Y/m/d H:i'}}{% else %}無{% endif %}</span>
   </div>
   <div class="card-body"> 
 <a data-forumid="{{class.forum_id}}" data-classroomid="{{class.classroom_id}}" href="#" role="btn" class="btn btn-primary apply">套用</a> <a data-forumid="{{class.forum_id}}" data-classroomid="{{class.classroom_id}}"  href="#" role="btn" class="btn btn-primary cancle">取消</a>
@@ -106,18 +106,32 @@ $("#toggle").change(function(e) {
 
 });
 
+    Date.prototype.Format = function (fmt) { 
+    var o = {
+        "M+": this.getMonth() + 1, //月份 
+        "d+": this.getDate(), //日 
+        "h+": this.getHours(), //小时 
+        "m+": this.getMinutes(), //分              
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+    if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+};
+
 $(".apply").click(function(e) {
     var launcher = this;  
+    var apply_date = new Date($("#datetimepicker1").data("date"));
     e.preventDefault();
   $.post('/teacher/forum/deadline/date/',
       {
         forumid: $(launcher).data('forumid'),
         classroomid: $(launcher).data('classroomid'),
-        deadlinedate: $("#deadline_date").val(),
+        deadlinedate: apply_date.Format("yyyy/MM/dd hh:mm"),
       },
        function(data){
         //alert("hi");
-        $(launcher).parent().parent().find(".deadline_string").html($("#deadline_date").val());
+        $(launcher).parent().parent().find(".deadline_string").html(apply_date.Format("yyyy/MM/dd hh:mm"));
       }
 		);
 

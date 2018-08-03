@@ -13,7 +13,14 @@ import django_excel as excel
 from django.http import JsonResponse
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.core.files.storage import FileSystemStorage
+import os
+from uuid import uuid4
+from django.conf import settings
+from wsgiref.util import FileWrapper
+from io import StringIO
+from shutil import copyfile
+from django.http import HttpResponse
 #from django.urls import reverse
 
 # 判斷是否為授課教師
@@ -577,7 +584,7 @@ def forum_class(request, classroom_id, work_id):
     return render_to_response('teacher/twork_class.html',{'classmate_work': classmate_work, 'classroom_id':classroom_id, 'index': work_id}, context_instance=RequestContext(request))
 
 # 列出所有討論主題素材
-class ForumContentListView(ListView):
+class ForumContentList(ListView):
     model = FContent
     context_object_name = 'contents'
     template_name = "teacher/forum_content.html"		
@@ -586,7 +593,7 @@ class ForumContentListView(ListView):
         return queryset
 			
     def get_context_data(self, **kwargs):
-        context = super(ForumContentListView, self).get_context_data(**kwargs)
+        context = super(ForumContentList, self).get_context_data(**kwargs)
         fwork = FWork.objects.get(id=self.kwargs['forum_id'])
         fclasses = FClass.objects.filter(forum_id=self.kwargs['forum_id'])				
         context['fwork']= fwork
@@ -595,7 +602,7 @@ class ForumContentListView(ListView):
         return context	
 			
 #新增一個課程
-class ForumContentCreateView(CreateView):
+class ForumContentCreate(CreateView):
     model = FContent
     form_class = ForumContentForm
     template_name = "teacher/forum_content_form.html"
@@ -622,12 +629,12 @@ class ForumContentCreateView(CreateView):
         work.memo = self.object.memo
         work.save()         
   
-        return redirect("/teacher/forum/content/"+self.kwargs['forum_id'])  
+        return redirect("/teacher/forum/content/"+str(self.kwargs['forum_id']))
 
     def get_context_data(self, **kwargs):
-        ctx = super(ForumContentCreateView, self).get_context_data(**kwargs)
-        ctx['forum'] = FWork.objects.get(id=self.kwargs['forum_id'])
-        return ctx
+        context = super(ForumContentCreate, self).get_context_data(**kwargs)
+        context['forum'] = FWork.objects.get(id=self.kwargs['forum_id'])
+        return context
 
 def forum_delete(request, forum_id, content_id):
     instance = FContent.objects.get(id=content_id)
@@ -668,10 +675,10 @@ def forum_download(request, content_id):
     filename = content.title
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))		
     download =  BASE_DIR + "/static/upload/" + content.filename
-    wrapper = FileWrapper(file( download, "r" ))
+    wrapper = FileWrapper(open( download, "rb" ))
     response = HttpResponse(wrapper, content_type = 'application/force-download')
     #response = HttpResponse(content_type='application/force-download')
-    response['Content-Disposition'] = 'attachment; filename={0}'.format(filename.encode('utf8'))
+    response['Content-Disposition'] = 'attachment; filename={0}'.format(filename)
     # It's usually a good idea to set the 'Content-Length' header too.
     # You can also set any other required headers: Cache-Control, etc.
     return response
