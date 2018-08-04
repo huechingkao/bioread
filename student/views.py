@@ -271,7 +271,7 @@ class ForumPublishDone(RedirectView):
           if len(works) == 1:
             update_avatar(self.request.user.id, 1, 2)
             # History
-            history = PointHistory(user_id=self.request.user.id, kind=1, message=u'2分--繳交討論區作業<'+fwork.title+'>', url='/student/forum/memo/'+classroom_id+'/'+index+'/'+action)
+            history = PointHistory(user_id=self.request.user.id, kind=1, message=u'2分--繳交討論區作業<'+fwork.title+'>', url='/student/forum/memo/'+str(classroom_id)+'/'+str(index)+'/0')
             history.save()								
       except ObjectDoesNotExist:
             pass

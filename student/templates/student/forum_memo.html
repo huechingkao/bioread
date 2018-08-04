@@ -30,7 +30,11 @@
     margin: 20px 0;
     font-size: 24px;
     color: #d17581;
-}	
+}
+  
+.modal-lg {
+    max-width: 600px !important;
+}  
 </style>
 {% endblock %}
 
@@ -133,7 +137,7 @@
   <footer>教師評語：{{last.scorer|realname}} <cite title="Source Title" class="teacher_comment_date">{{last.comment_publication_date}}</cite></footer>
 </blockquote>
 </div>
-								</div>
+								
 				
 <div id="blockquote">
                {% for reply in replys|slice:":2" %}
@@ -147,10 +151,11 @@
 {% endif %}		
 			</div>
 	{% endwith %}			
+<BR>
 {% endfor %}
 
   <div class="modal fade" tabindex="-1" role="dialog" id="vidModal">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-body">
             <div id="vplayer"></div>
