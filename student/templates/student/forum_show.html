@@ -43,8 +43,8 @@
 {% if work.types == 1 %}
  <div class="card-header">             
     <button type="button" class="btn btn-default">{{forloop.revcounter}}</button> 外部網址 
-    <A href="/teacher/forum/content/delete/{{forum_id}}/{{work.id}}" onclick="return confirm('確定要刪除嗎?')"><img src="/static/images/delete.gif"> 刪除</a>
-    <a href="/teacher/forum/content/edit/{{forum_id}}/{{work.id}}"><img src="/static/images/edit.gif"> 編輯</a>
+    <A href="/teacher/forum/content/delete/{{forum.id}}/{{work.id}}" onclick="return confirm('確定要刪除嗎?')"><img src="/static/images/delete.gif"> 刪除</a>
+    <a href="/teacher/forum/content/edit/{{forum.id}}/{{work.id}}"><img src="/static/images/edit.gif"> 編輯</a>
   </div>
   <div class="card-body">
     <a href="{{work.link}}" target="_blank">{% if work.title %}{{work.title}}{% else %}開啟連結{% endif %}</a>
@@ -52,11 +52,11 @@
       {% elif work.types == 2 %}
   <div class="card-header">             
     <button type="button" class="btn btn-default">{{forloop.revcounter}}</button> Youtube影片
-    <A href="/teacher/forum/content/delete/{{forum_id}}/{{work.id}}" onclick="return confirm('確定要刪除嗎?')"><img src="/static/images/delete.gif"> 刪除</a>
-    <a href="/teacher/forum/content/edit/{{forum_id}}/{{work.id}}"><img src="/static/images/edit.gif"> 編輯</a>
+    <A href="/teacher/forum/content/delete/{{forum.id}}/{{work.id}}" onclick="return confirm('確定要刪除嗎?')"><img src="/static/images/delete.gif"> 刪除</a>
+    <a href="/teacher/forum/content/edit/{{forum.id}}/{{work.id}}"><img src="/static/images/edit.gif"> 編輯</a>
 		<img src="/static/images/video.gif">記錄:
 		{% for class in fclasses %}
-     <a href="/teacher/event/video/{{class.classroom_id}}/{{forum_id}}/{{work.id}}">{{class.classroom_id|classname}}</a>|		
+     <a href="/teacher/event/video/{{class.classroom_id}}/{{forum.id}}/{{work.id}}">{{class.classroom_id|classname}}</a>|		
     {% endfor %}
   </div>
   <div class="card-body">
@@ -67,8 +67,8 @@
     {% elif work.types == 3 %} 
    <div class="card-header">             
    <button type="button" class="btn btn-default">{{forloop.revcounter}}</button> 下載檔案
-    <A href="/teacher/forum/content/delete/{{forum_id}}/{{work.id}}" onclick="return confirm('確定要刪除嗎?')"><img src="/static/images/delete.gif"> 刪除</a>
-    <a href="/teacher/forum/content/edit/{{forum_id}}/{{work.id}}"><img src="/static/images/edit.gif"> 編輯</a>
+    <A href="/teacher/forum/content/delete/{{forum.id}}/{{work.id}}" onclick="return confirm('確定要刪除嗎?')"><img src="/static/images/delete.gif"> 刪除</a>
+    <a href="/teacher/forum/content/edit/{{forum.id}}/{{work.id}}"><img src="/static/images/edit.gif"> 編輯</a>
   </div>
   <div class="card-body">
      <a href="/teacher/forum/download/{{work.id}}" target="_blank">{{work.title}}</a>
@@ -76,8 +76,8 @@
      {% elif work.types == 4 %}
   <div class="card-header">             
   <button type="button" class="btn btn-default">{{forloop.revcounter}}</button> 自訂文字
-    <A href="/teacher/forum/content/delete/{{forum_id}}/{{work.id}}" onclick="return confirm('確定要刪除嗎?')"><img src="/static/images/delete.gif"> 刪除</a>
-    <a href="/teacher/forum/content/edit/{{forum_id}}/{{work.id}}"><img src="/static/images/edit.gif"> 編輯</a>
+    <A href="/teacher/forum/content/delete/{{forum.id}}/{{work.id}}" onclick="return confirm('確定要刪除嗎?')"><img src="/static/images/delete.gif"> 刪除</a>
+    <a href="/teacher/forum/content/edit/{{forum.id}}/{{work.id}}"><img src="/static/images/edit.gif"> 編輯</a>
   </div>
   <div class="card-body">
      <a href="/teacher/forum/download/{{work.id}}" target="_blank">{{work.title}}</a>
