@@ -3,6 +3,8 @@ from django.contrib.auth.models import User, Group
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from account.models import *
 from teacher.models import *
+from student.models import *
+import json
 import re
 
 register = template.Library()
@@ -153,6 +155,6 @@ def likes(work_id):
     sfwork = SFWork.objects.get(id=work_id)
     jsonDec = json.decoder.JSONDecoder()    
     if sfwork.likes:
-        likes = jsonDec.decode(sfwork.likes)
-        return likes
+        like_ids = jsonDec.decode(sfwork.likes)
+        return like_ids
     return []  
