@@ -32,7 +32,7 @@ class StudentGroup(models.Model):
 #作業
 class SFWork(models.Model):
     student_id = models.IntegerField(default=0)
-    index = models.IntegerField()
+    index = models.IntegerField(default=0)
     memo = models.TextField(default='')
     memo_e =  models.IntegerField(default=0)
     memo_c = models.IntegerField(default=0)		

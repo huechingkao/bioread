@@ -2,7 +2,7 @@ from django.shortcuts import render
 from teacher.models import *
 from student.models import *
 from account.models import *
-from account.forms import LineForm
+from account.forms import *
 from teacher.forms import *
 from django.views import generic
 from django.contrib.auth.models import User, Group

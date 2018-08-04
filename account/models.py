@@ -38,6 +38,10 @@ class Profile(models.Model):
   assistant = models.IntegerField(default=0)
 	# 積分：創意秀
   creative = models.IntegerField(default=0)	
+	# 積分：按讚
+  like = models.FloatField(default=0.0)
+	# 積分：留言
+  reply = models.FloatField(default=0.0)
 	# 大頭貼等級
   avatar = models.IntegerField(default=0)
 	# 訪客人次
