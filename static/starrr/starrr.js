@@ -67,7 +67,7 @@ var slice = [].slice;
 
         Starrr.prototype.syncRating = function (rating) {
             var $stars, i, j, ref, results;
-            rating || (rating = this.options.rating);
+            rating || (rating = this.options.rating) || (rating = this.$el.data('rating'));
             $stars = this.getStars();
             results = [];
             for (i = j = 1, ref = this.options.max; 1 <= ref ? j <= ref : j >= ref; i = 1 <= ref ? ++j : --j) {

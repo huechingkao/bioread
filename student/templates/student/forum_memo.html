@@ -297,7 +297,12 @@ $(document).ready(function () {
 {% endblock %}
 
 {% block domready %}
+  {% if is_teacher %}
   $('.starrr').starrr();
+  $('.starrr').on('starrr:change', function(e, value){
+    $('#ratings-hidden').val(value);
+  });
+  {% endif %}
   $('a.seat').click(function(e){
     var launcher = this;
 		var url = ($(this).attr('href'));
@@ -484,10 +489,6 @@ $(function(){
       });
     $(launcher).parent().find('.close-review-box').hide();
 
-  });
-
-  $('.starrr').on('starrr:change', function(e, value){
-    $('#ratings-hidden').val(value);
   });
 
 	$('.score_submit').click(function(e){
