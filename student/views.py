@@ -17,6 +17,7 @@ from wsgiref.util import FileWrapper
 from django.http import HttpResponse
 from django.http import JsonResponse
 import json
+import jieba
 
 def is_classmate(student_id, user_id):
     enrolls = Enroll.objects.filter(student_id=student_id)
@@ -611,43 +612,65 @@ def forum_score(request):
         return JsonResponse({'status':'fail'}, safe=False)        
 
 # 統計某討論主題所有同學心得
-def forum_jieba(request, classroom_id, index): 
-    classroom = Classroom.objects.get(id=classroom_id)
-    enrolls = Enroll.objects.filter(classroom_id=classroom_id)
-    works = []
-    contents = FContent.objects.filter(forum_id=index).order_by("-id")
-    fwork = FWork.objects.get(id=index)
-    teacher_id = fwork.teacher_id
-    subject = fwork.title
-    memo = ""
-    for enroll in enrolls:
+class ForumJieba(ListView):
+    model = SFWork
+    context_object_name = 'contents'
+    template_name = 'student/forum_jieba.html'    
+    
+    def get_context_data(self, **kwargs):
+      context = super(ForumJieba, self).get_context_data(**kwargs)      
+      index = self.kwargs['index']
+      classroom_id = self.kwargs['classroom_id']
+      classroom = Classroom.objects.get(id=classroom_id)
+      enrolls = Enroll.objects.filter(classroom_id=classroom_id)
+      works = []
+      contents = FContent.objects.filter(forum_id=index).order_by("-id")
+      fwork = FWork.objects.get(id=index)
+      teacher_id = fwork.teacher_id
+      subject = fwork.title
+      memo = ""
+      for enroll in enrolls:
         try:
             works = SFWork.objects.filter(index=index, student_id=enroll.student_id).order_by("-id")
             if works:
                 memo += works[0].memo
         except ObjectDoesNotExist:
             pass
-    memo = memo.rstrip('\r\n')
-    seglist = jieba.cut(memo, cut_all=False)
-    hash = {}
-    for item in seglist: 
+      memo = memo.rstrip('\r\n')
+      seglist = jieba.cut(memo, cut_all=False)
+      hash = {}
+      for item in seglist: 
         if item in hash:
             hash[item] += 1
         else:
             hash[item] = 1
-    words = []
-    count = 0
-    error=""
-    for key, value in sorted(hash.items(), key=lambda x: x[1], reverse=True):
+      words = []
+      count = 0
+      error=""
+      for key, value in sorted(hash.items(), key=lambda x: x[1], reverse=True):
         if ord(key[0]) > 32 :
             count += 1	
             words.append([key, value])
             if count == 100:
-                break       
-    return render_to_response('student/forum_jieba.html', {'index': index, 'words':words, 'enrolls':enrolls, 'classroom':classroom, 'subject':subject}, context_instance=RequestContext(request))
+                break
+      context['index'] = index
+      context['words'] = words
+      context['enrolls'] = enrolls
+      context['classroom'] = classroom
+      context['subject'] = subject
+      return context
 
-# 查詢某班某詞句心得
-def forum_word(request, classroom_id, index, word):
+# 統計某討論主題所有同學心得
+class ForumWord(ListView):
+    model = SFWork
+    context_object_name = 'contents'
+    template_name = 'student/forum_word.html'    
+    
+    def get_context_data(self, **kwargs):
+        context = super(ForumWord, self).get_context_data(**kwargs)      
+        index = self.kwargs['index']
+        classroom_id = self.kwargs['classroom_id']
+        word = self.kwargs['word']        
         enrolls = Enroll.objects.filter(classroom_id=classroom_id).order_by("seat")
         work_ids = []
         datas = []
@@ -663,8 +686,11 @@ def forum_word(request, classroom_id, index, word):
                 pass
         classroom = Classroom.objects.get(id=classroom_id)
         for work, seat in datas:
-            work.memo = work.memo.replace(word, '<font color=red>'+word+'</font>')          
-        return render_to_response('student/forum_word.html', {'word':word, 'datas':datas, 'classroom':classroom}, context_instance=RequestContext(request))
+            work.memo = work.memo.replace(word, '<font color=red>'+word+'</font>')
+        context['word'] = word
+        context['datas'] = datas
+        context['classroom'] = classroom
+        return context
 		
 # 下載檔案
 def forum_download(request, file_id):

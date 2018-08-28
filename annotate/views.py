@@ -18,7 +18,7 @@ def root(request):
 
 def annotations(request):
   if request.method == "POST":
-    received_annotation = json.loads(request.body)
+    received_annotation = json.loads(request.body.decode('utf-8'))
     findex = received_annotation['findex']
     stuid = received_annotation['stuid']
     ftype = received_annotation.get('ftype', 0)

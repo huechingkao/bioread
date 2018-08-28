@@ -29,8 +29,8 @@ urlpatterns = [
     path('forum/people/', views.forum_people), 
     path('forum/guestbook/', views.forum_guestbook), 	
     path('forum/score/', views.forum_score),   
-    #url(r'^forum/jieba/(?P<classroom_id>\d+)/(?P<index>\d+)/$', login_required(views.forum_jieba)), 	
-    #url(r'^forum/word/(?P<classroom_id>\d+)/(?P<index>\d+)/(?P<word>[^/]+)/$', login_required(views.forum_word)),  
+    path('forum/jieba/<int:classroom_id>/<int:index>/', views.ForumJieba.as_view()), 	
+    path('forum/word/<int:classroom_id>/<int:index>/<str:word>/', views.ForumWord.as_view()),  
 	  #url(r'^forum/download/(?P<file_id>\d+)/$', views.forum_download, name='forum-download'), 
 	  #path('forum/showpic/<int:file_id>/', views.ForumShowPic.as_view()), 	
 ]
