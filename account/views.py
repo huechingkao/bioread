@@ -256,7 +256,6 @@ class MessageList(ListView):
 class SchoolCreate(CreateView):
     model = School
     form_class = RegistrationSchoolForm
-    redirect_field_name = REDIRECT_FIELD_NAME    
     success_url = "/account/user/create"   
     template_name = 'school_create.html'
       
@@ -264,13 +263,7 @@ class SchoolCreate(CreateView):
         valid = super(SchoolCreate, self).form_valid(form)
         school = form.save() 
         return valid
-      
-    def get_success_url(self):
-        redirect_to = self.request.GET.get(self.redirect_field_name)
-        if not is_safe_url(url=redirect_to, host=self.request.get_host()):
-            redirect_to = self.success_url
-        return redirect_to
-      
+          
     def get_context_data(self, **kwargs):
         context = super(SchoolCreate, self).get_context_data(**kwargs)
         context['schools'] = School.objects.all()
